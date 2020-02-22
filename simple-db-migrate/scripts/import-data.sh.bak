@@ -1,0 +1,6 @@
+#!/bin/bash
+
+$ORACLE_HOME/bin/sqlplus -s $ORACLE_SYS_USER/$ORACLE_SYS_PASSWORD AS SYSDBA << SQL
+@/usr/local/src/oracle/create_table_student.sql
+exit;
+SQL

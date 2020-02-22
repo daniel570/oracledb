@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: server
+spec:
+    initContainers:
+    - name: scripts
+      image: daniel570/alpine:3.7-custom
+      command: ["cp", "/customscripts", "/opt/oracle/scripts/setup"]
+      volumeMounts:
+      - mountPath: /opt/oracle/scripts/setup
+        name: customscripts
+    containers:
+    - name: orcldb
+      image: daniel570/oracledb:12.2.0.1
+      volumeMounts:
+      - mountPath: /opt/oracle/scripts/setup
+        name: customscripts
+      - mountPath: /opt/oracle/oradata
+        name: data
+      ports:
+      - containerPort: 1521
+        hostPort: 1521 
+    volumes:
+    - name: customscripts
+      emptyDir: {}
+    - name: data
+      emptyDir: {}

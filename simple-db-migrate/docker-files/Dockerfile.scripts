@@ -1,0 +1,15 @@
+FROM ubuntu:18.04
+
+USER root
+
+RUN apt update && apt install -y git
+
+RUN mkdir /home/oracle
+
+COPY ./customscripts /home/oracle/customscripts
+
+RUN chmod 777 /home/oracle/customscripts/*
+
+RUN chown 54321:54321 /home/oracle/customscripts/*
+
+WORKDIR /home/oracle

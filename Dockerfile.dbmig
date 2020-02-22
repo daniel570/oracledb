@@ -1,0 +1,46 @@
+FROM oracle/database:18.3.0-ee
+
+ENV ORACLE_BASE=/opt/oracle \
+    ORACLE_HOME=/opt/oracle/product/18c/dbhome_1 \
+    INSTALL_DIR=/opt/install \
+    INSTALL_FILE_1="LINUX.X64_180000_db_home.zip" \
+    INSTALL_RSP="db_inst.rsp" \
+    CONFIG_RSP="dbca.rsp.tmpl" \
+    PWD_FILE="setPassword.sh" \
+    RUN_FILE="runOracle.sh" \
+    START_FILE="startDB.sh" \
+    CREATE_DB_FILE="createDB.sh" \
+    SETUP_LINUX_FILE="setupLinuxEnv.sh" \
+    CHECK_SPACE_FILE="checkSpace.sh" \
+    CHECK_DB_FILE="checkDBStatus.sh" \
+    USER_SCRIPTS_FILE="runUserScripts.sh" \
+    INSTALL_DB_BINARIES_FILE="installDBBinaries.sh" \
+    ORACLE_SYS_USER=SYSTEM \
+    ORACLE_SYS_PASSWORD=LetsDocker
+
+ENV PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch/:/usr/sbin:$PATH \
+    LD_LIBRARY_PATH=$ORACLE_HOME/lib:/usr/lib \
+    CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib
+
+USER ROOT
+
+RUN $ORACLE_BASE/setPassword.sh $ORACLE_SYS_PASSWORD
+
+RUN mkdir -p /usr/local/src/oracle
+
+WORKDIR /usr/local/src/oracle
+
+COPY ./simple-db-migrate/scripts/create_table_student.sql /usr/local/src/oracle
+COPY ./simple-db-migrate/scripts/import-data.sh /usr/local/src/oracle
+COPY ./simple-db-migrate/scripts/start-import.sh /usr/local/src/oracle
+
+RUN chmod +x /usr/local/src/oracle/import-data.sh
+RUN chmod +x /usr/local/src/oracle/start-import.sh
+
+RUN chown -R oracle:dba /usr/local/src/oracle
+
+USER oracle
+
+RUN ./start-import.sh
+
+ENTRYPOINT $ORACLE_BASE/$RUN_FILE 
