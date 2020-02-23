@@ -22,11 +22,6 @@ pipeline {
       sh 'docker tag oracle/database:12.2.0.1 daniel570/oracledb:12.2.0.1'
 
       sh '''
-      cd helm-charts
-      helm install appdb appdb-chart
-      sleep 300
-      '''
-      sh '''
       ls -la db-migrate
       cd db-migrate/docker-files
       svcIp=$(kubectl get service/oracledb -o yaml | grep clusterIP | cut -d ":" -f 2)
