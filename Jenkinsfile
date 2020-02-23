@@ -8,7 +8,7 @@ pipeline {
       stage('Checkout') {
           steps {
             cleanWs()
-            git credentialsId: 'GitHubCreds', url: 'https://github.com/daniel-develeap/oracledb-temp.git'
+            git credentialsId: 'GitHubCreds', url: 'https://github.com/daniel-develeap/oracledb.git'
           }
       }
     stage('Build') {
