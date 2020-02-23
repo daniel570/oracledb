@@ -11,7 +11,7 @@ pipeline {
             git credentialsId: 'GitHubCreds', url: 'https://github.com/daniel-develeap/oracledb.git'
           }
       }
-    stage('Build') {
+    stage('Build db client') {
       steps {
           // Download " Linux x86-64" under "Oracle Database 12c Release 2" from "http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html"
           // Put downloaded file inside path "OracleDatabase/SingleInstance/dockerfiles/12.2.0.1/""
@@ -41,7 +41,7 @@ pipeline {
           }
         }
       }
-       stage('Deploy') {
+       stage('Run db-migration job') {
         steps {
          sh 'kubectl apply -f helm-charts/appdb-chart/controllers/job.yaml'
       }
