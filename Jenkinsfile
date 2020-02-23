@@ -38,7 +38,6 @@ pipeline {
       sed -i -e "s/@ /@/g" import-data.sh
       cat import-data.sh
       docker build -t daniel570/oracledb:instantclient-12.2.0.1 -f Dockerfile.dbclient .
-      #docker tag oracledb:instantclient-12.2.0.1 daniel570/oracledb:instantclient-12.2.0.1.$BUILD_ID
       ''' 
       }
     }
