@@ -1,3 +1,7 @@
+This repo contains helm chart with 2 deployments:
+1. Web application based on tomcat:9 with connection schema to oracleDB12c
+2. Oracle Database 12.2.0.1 with Database Migration Job.
+
 In order to install the helm chart - run helm-install.sh
 
 Prerequisutes:
