@@ -15,6 +15,12 @@ pipeline {
       steps {
           // Download " Linux x86-64" under "Oracle Database 12c Release 2" from "http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html"
           // Put downloaded file inside path "OracleDatabase/SingleInstance/dockerfiles/12.2.0.1/""
+
+      sh '''cd OracleDatabase/SingleInstance/dockerfiles/
+      ./buildDockerImage.sh -v 12.2.0.1 -e
+      '''
+      sh 'docker tag oracle/database:12.2.0.1 daniel570/oracledb:12.2.0.1'
+
       sh '''
       cd helm-charts
       helm install appdb appdb-chart
