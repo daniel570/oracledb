@@ -22,16 +22,12 @@ pipeline {
       sh 'docker tag oracle/database:12.2.0.1 daniel570/oracledb:12.2.0.1'
 
       sh '''
-      ls -la db-migrate
       cd db-migrate/docker-files
       svcIp=$(kubectl get service/oracledb -o yaml | grep clusterIP | cut -d ":" -f 2)
-      #curIp=$(cat import-data.sh | cut -d "@" -f 2 | cut -d ":" -f 1 | grep 10.*.*.*)
       ./curip.sh
       curIp=$(cat curip.txt)
-      echo $curIp
       sed -i -e s/"$curIp"/"$svcIp"/g import-data.sh
       sed -i -e "s/@ /@/g" import-data.sh
-      cat import-data.sh
       docker build -t daniel570/oracledb:instantclient-12.2.0.1 -f Dockerfile.dbclient .
       ''' 
       }
