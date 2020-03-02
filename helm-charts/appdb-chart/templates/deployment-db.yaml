@@ -26,8 +26,6 @@ spec:
         - mountPath: /opt/oracle/scripts/startup
           name: customscripts
       containers:
-#      - image: javiermugueta/oracledb
-#      - image: fra.ocir.io/<tenantname>/atrepo/orcldb:latest
       - image: daniel570/oracledb:12.2.0.1
         name: orcldb
         ports:
